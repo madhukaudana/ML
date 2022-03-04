@@ -10,6 +10,8 @@ import sys
 import numpy as np
 import os.path
 
+#create set
+itemSet = set()
 # Initialize the parameters
 confThreshold = 0.5  # Confidence threshold
 nmsThreshold = 0.4  # Non-maximum suppression threshold
@@ -55,9 +57,14 @@ def drawPred(classId, conf, left, top, right, bottom):
                   (255, 255, 255), cv2.FILLED)
     cv2.putText(frame, label, (left, top), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 0, 0), 1)
 
-    print(classes[classId])
+    # print(classes[classId])
+
+    #adding detected item into a set
+    itemSet.add(classes[classId])
+    #print(itemSet)
+
     # print(classId)
-    print(label)
+    #  print(label)
 
 
 # Remove the bounding boxes with low confidence using non-maxima suppression
@@ -112,6 +119,7 @@ else:
     cap = cv2.VideoCapture(0)
     width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+
 
 # Get the video writer initialized to save the output video
 if (not args.image):
