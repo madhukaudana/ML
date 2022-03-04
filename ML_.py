@@ -2,7 +2,7 @@
 # python yolo.py --video=<path to video file>
 # python yolo.py --image=<path to image file>
 #objectdetection
-#sdfjh
+#yolo
 import numpy as np
 import cv2
 import argparse
