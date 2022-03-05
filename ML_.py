@@ -3,6 +3,8 @@
 # python yolo.py --image=<path to image file>
 #objectdetection
 #yolo
+import pickle
+
 import numpy as np
 import cv2
 import argparse
@@ -12,6 +14,7 @@ import os.path
 
 #create set
 itemSet = set()
+compList=[]
 # Initialize the parameters
 confThreshold = 0.5  # Confidence threshold
 nmsThreshold = 0.4  # Non-maximum suppression threshold
@@ -61,7 +64,18 @@ def drawPred(classId, conf, left, top, right, bottom):
 
     #adding detected item into a set
     itemSet.add(classes[classId])
-    #print(itemSet)
+
+    out_list = list(itemSet)
+    if(len(compList)!=len(out_list)):
+        for item in itemSet:
+            if item not in compList:
+                compList.append(item)
+
+
+    #print(out_list)
+    print(compList)
+    
+
 
     # print(classId)
     #  print(label)
@@ -117,8 +131,8 @@ if (args.image):
 else:
     # Open the video file
     cap = cv2.VideoCapture(0)
-    width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-    height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+
+
 
 
 # Get the video writer initialized to save the output video
