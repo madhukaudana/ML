@@ -23,7 +23,7 @@ prodPrice= None
 prodWeight=None
 product_details=None
 
-
+#compare with database
 for row in records:               
     if(product==row[1]):
         prodChecker=True
