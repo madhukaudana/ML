@@ -1,8 +1,8 @@
 # Usage:
 # python yolo.py --video=<path to video file>
 # python yolo.py --image=<path to image file>
-#objectdetection
-#yolo
+# objectdetection
+# yolo
 import pickle
 
 import numpy as np
@@ -11,10 +11,21 @@ import argparse
 import sys
 import numpy as np
 import os.path
+import time
 
-#create set
+# create set
 itemSet = set()
-compList=[]
+compList = []
+newSet = set()
+file = open("output.txt", "r")
+for line in file:
+    file.readline()
+    newSet.add(line.strip('\n'))
+
+compList = list(newSet)
+print(compList)
+file.close()
+
 # Initialize the parameters
 confThreshold = 0.5  # Confidence threshold
 nmsThreshold = 0.4  # Non-maximum suppression threshold
@@ -38,11 +49,12 @@ def getOutputsNames(net):
     # Get the names of all the layers in the network
     layersNames = net.getLayerNames()
     # Get the names of the output layers, i.e. the layers with unconnected outputs
-    return [layersNames[i-1] for i in net.getUnconnectedOutLayers()]
+    return [layersNames[i - 1] for i in net.getUnconnectedOutLayers()]
 
 
 # Draw the predicted bounding box
 def drawPred(classId, conf, left, top, right, bottom):
+    count = 0
     # Draw a bounding box.
     cv2.rectangle(frame, (left, top), (right, bottom), (255, 178, 50), 3)
 
@@ -62,20 +74,21 @@ def drawPred(classId, conf, left, top, right, bottom):
 
     # print(classes[classId])
 
-    #adding detected item into a set
+    # adding detected item into a set
     itemSet.add(classes[classId])
 
     out_list = list(itemSet)
-    if(len(compList)!=len(out_list)):
+    MyFile = open('output.txt', 'a')
+    if (len(compList) != len(out_list)):
         for item in itemSet:
+            count = count + 1
             if item not in compList:
                 compList.append(item)
-
-
-    #print(out_list)
-    print(compList)
-    
-
+                #  print(compList)
+                MyFile.write(str(item) + '\n')
+                if (count >= 1):
+                    MyFile.close()
+                    sys.exit()
 
     # print(classId)
     #  print(label)
@@ -111,7 +124,7 @@ def postprocess(frame, outp):
     # lower confidences.
     indices = cv2.dnn.NMSBoxes(boxes, confidences, confThreshold, nmsThreshold)
     for i in indices:
-       # i = i[0]
+        # i = i[0]
         box = boxes[i]
         left = box[0]
         top = box[1]
@@ -131,9 +144,6 @@ if (args.image):
 else:
     # Open the video file
     cap = cv2.VideoCapture(0)
-
-
-
 
 # Get the video writer initialized to save the output video
 if (not args.image):
