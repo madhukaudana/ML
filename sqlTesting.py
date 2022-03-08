@@ -1,7 +1,6 @@
-import os
 import mysql.connector
 from flask import Flask, render_template
-
+from PIL import Image as PImage
 
 db = mysql.connector.connect(
   host="localhost",
@@ -22,13 +21,19 @@ prodChecker= False
 prodPrice= None
 prodWeight=None
 product_details=None
+img_Path=None
 
-#compare with database
+
 for row in records:               
     if(product==row[1]):
         prodChecker=True
         prodPrice=row[2]
-        
+        img_Path=row[5]
+#reading the selected image
+image = PImage.open(img_Path)
+#oppening the selected image
+image.show()
+
 
 
 if(prodChecker==True):
@@ -37,14 +42,9 @@ else:
     print("Product has not found.")
 
 
-PEOPLE_FOLDER = os.path.join('static', 'people_photo')
-
-
-
-
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = PEOPLE_FOLDER
+
 
 @app.route('/')
 @app.route('/home')
