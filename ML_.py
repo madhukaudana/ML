@@ -18,13 +18,23 @@ import time
 itemSet = set()
 compList = []
 newSet = set()
+File_list_Read = []
+
 file = open("output.txt", "r")
-for line in file:
-    file.readline()
-    newSet.add(line.strip('\n'))
+content = file.read()
+File_list = content.split(",")
+File_list_Read.append(File_list)
+
+# file.readline()
+# print(file.read())
+print(File_list)
+print(content)
+# for line in file:
+# file.readline()
+#     newSet.add(line.strip('\n'))
 
 compList = list(newSet)
-print(compList)
+# print(compList)
 file.close()
 
 # Initialize the parameters
@@ -79,17 +89,40 @@ def drawPred(classId, conf, left, top, right, bottom):
     itemSet.add(classes[classId])
 
     out_list = list(itemSet)
+
     MyFile = open('output.txt', 'a')
     if (len(compList) != len(out_list)):
+
         for item in itemSet:
             count = count + 1
+
             if item not in compList:
+                for x in range(len(File_list)-2):
+                    if File_list[x] in item:
+                        # print(x)
+                         del File_list[x]
+
+                    # else:
+
+                        # MyFile.write(str(File_list))
+                        # print(item)
+                        # compList.append(item)
+                        # MyFile.write(item + ',')
+                        #
+                        # print(compList)
+                # print(item)
                 compList.append(item)
-                #  print(compList)
-                MyFile.write(str(item) + '\n')
-                if (count >= 1):
+                print(compList)
+
+                MyFile.write(item + ',')
+                # MyFile.write(str(File_list))
+                # MyFile.writelines(["%s\n" % item for item in File_list])
+                # print(File_list)
+                if (count >= 2):
+                    print(File_list)
                     MyFile.close()
                     sys.exit()
+
 
     # print(classId)
     #  print(label)
