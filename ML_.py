@@ -17,25 +17,10 @@ import time
 # create set
 itemSet = set()
 compList = []
-newSet = set()
-File_list_Read = []
+pickle_off = open ("datafile.txt", "rb")
+compList= pickle.load(pickle_off)
+print(compList)
 
-file = open("output.txt", "r")
-content = file.read()
-File_list = content.split(",")
-File_list_Read.append(File_list)
-
-# file.readline()
-# print(file.read())
-print(File_list)
-print(content)
-# for line in file:
-# file.readline()
-#     newSet.add(line.strip('\n'))
-
-compList = list(newSet)
-# print(compList)
-file.close()
 
 # Initialize the parameters
 confThreshold = 0.5  # Confidence threshold
@@ -90,44 +75,32 @@ def drawPred(classId, conf, left, top, right, bottom):
 
     out_list = list(itemSet)
 
-    MyFile = open('output.txt', 'a')
     if (len(compList) != len(out_list)):
-
         for item in itemSet:
             count = count + 1
+            for x in range(0, len(compList) - 1):
+                if compList[x] == item:
+                    # print(x)
+                    del compList[x]
 
+                    print(compList)
             if item not in compList:
-                for x in range(len(File_list)-2):
-                    if File_list[x] in item:
-                        # print(x)
-                         del File_list[x]
 
-                    # else:
-
-                        # MyFile.write(str(File_list))
-                        # print(item)
-                        # compList.append(item)
-                        # MyFile.write(item + ',')
-                        #
-                        # print(compList)
-                # print(item)
                 compList.append(item)
-                print(compList)
+                #  print(compList)
 
-                MyFile.write(item + ',')
-                # MyFile.write(str(File_list))
-                # MyFile.writelines(["%s\n" % item for item in File_list])
-                # print(File_list)
-                if (count >= 2):
-                    print(File_list)
-                    MyFile.close()
+                with open('datafile.txt', 'wb') as fh:
+                    pickle.dump(compList, fh)
+
+
+                if (count >= 1):
+                    print(compList)
                     sys.exit()
-
 
     # print(classId)
     #  print(label)
 
-
+#bla
 # Remove the bounding boxes with low confidence using non-maxima suppression
 def postprocess(frame, outp):
     frameHeight = frame.shape[0]

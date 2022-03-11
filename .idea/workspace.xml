@@ -115,8 +115,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.ML_" />
-        <item itemvalue="Python.Motion detection" />
         <item itemvalue="Python.main" />
+        <item itemvalue="Python.Motion detection" />
       </list>
     </recent_temporary>
   </component>
@@ -128,7 +128,8 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1646635190139</updated>
-      <workItem from="1646635191957" duration="33263000" />
+      <workItem from="1646635191957" duration="33671000" />
+      <workItem from="1609459553524" duration="4274000" />
     </task>
     <servers />
   </component>
@@ -140,30 +141,35 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/ML_.py</url>
-          <line>62</line>
+          <line>66</line>
           <option name="timeStamp" value="7" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/ML_.py</url>
-          <line>204</line>
+          <line>210</line>
           <option name="timeStamp" value="8" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/ML_.py</url>
-          <line>207</line>
+          <line>213</line>
           <option name="timeStamp" value="9" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/ML_.py</url>
-          <line>140</line>
+          <line>146</line>
           <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ML_.py</url>
+          <line>106</line>
+          <option name="timeStamp" value="12" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/ML$ML_.coverage" NAME="ML_ Coverage Results" MODIFIED="1646976138125" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/ML$ML_.coverage" NAME="ML_ Coverage Results" MODIFIED="1646995901992" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/ML$Motion_detection.coverage" NAME="Motion detection Coverage Results" MODIFIED="1646974397745" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/ML$main.coverage" NAME="main Coverage Results" MODIFIED="1646908782484" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$USER_HOME$/Desktop/pythonProject" />
+    <SUITE FILE_PATH="coverage/ML$main.coverage" NAME="main Coverage Results" MODIFIED="1646995674460" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$USER_HOME$/Desktop/pythonProject" />
   </component>
 </project>
