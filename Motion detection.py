@@ -7,6 +7,7 @@ import argparse
 import sys
 import os.path
 # import ML_
+import cv2
 
 count3 = 0
 trigpin = 11

@@ -15,6 +15,11 @@ import os.path
 import time
 
 # create set
+
+weight = 100
+reduce_weight = 80
+new_weight = 120
+
 itemSet = set()
 compList = []
 pickle_off = open ("datafile.txt", "rb")
@@ -45,7 +50,7 @@ def getOutputsNames(net):
     # Get the names of all the layers in the network
     layersNames = net.getLayerNames()
     # Get the names of the output layers, i.e. the layers with unconnected outputs
-    return [layersNames[i - 1] for i in net.getUnconnectedOutLayers()]
+    return [layersNames[i[0] - 1] for i in net.getUnconnectedOutLayers()]
 
 
 # Draw the predicted bounding box
@@ -70,6 +75,7 @@ def drawPred(classId, conf, left, top, right, bottom):
 
     # print(classes[classId])
 
+
     # adding detected item into a set
     itemSet.add(classes[classId])
 
@@ -78,15 +84,20 @@ def drawPred(classId, conf, left, top, right, bottom):
     if (len(compList) != len(out_list)):
         for item in itemSet:
             count = count + 1
-            for x in range(0, len(compList) - 1):
-                if compList[x] == item:
-                    # print(x)
-                    del compList[x]
 
-                    print(compList)
-            if item not in compList:
+            # if reduce_weight < weight:
+            #     for x in range(0, len(compList)):
+            #         if compList[x] == item:
+            #             # print(x)
+            #             del compList[x]
+            #
+            #             print(compList)
 
-                compList.append(item)
+            if new_weight > weight:
+
+                if item not in compList:
+
+                    compList.append(item)
                 #  print(compList)
 
                 with open('datafile.txt', 'wb') as fh:
@@ -131,7 +142,7 @@ def postprocess(frame, outp):
     # lower confidences.
     indices = cv2.dnn.NMSBoxes(boxes, confidences, confThreshold, nmsThreshold)
     for i in indices:
-        # i = i[0]
+        i = i[0]
         box = boxes[i]
         left = box[0]
         top = box[1]
