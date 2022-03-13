@@ -7,15 +7,16 @@ import argparse
 import sys
 import os.path
 # import ML_
+import cv2
 
-count = 0
+count3 = 0
 trigpin = 11
 ecopin = 12
 
 board = pymata4.Pymata4()
 
 def the_callback(data):
-    global count
+    global count3
     print("Distance: ", data[2])
     if data [2] < 100:
         os.system("python ML_.py")

@@ -15,17 +15,17 @@ import os.path
 import time
 
 # create set
+
+weight = 100
+reduce_weight = 80
+new_weight = 120
+
 itemSet = set()
 compList = []
-newSet = set()
-file = open("output.txt", "r")
-for line in file:
-    file.readline()
-    newSet.add(line.strip('\n'))
-
-compList = list(newSet)
+pickle_off = open ("datafile.txt", "rb")
+compList= pickle.load(pickle_off)
 print(compList)
-file.close()
+
 
 # Initialize the parameters
 confThreshold = 0.5  # Confidence threshold
@@ -50,7 +50,7 @@ def getOutputsNames(net):
     # Get the names of all the layers in the network
     layersNames = net.getLayerNames()
     # Get the names of the output layers, i.e. the layers with unconnected outputs
-    return [layersNames[i - 1] for i in net.getUnconnectedOutLayers()]
+    return [layersNames[i[0] - 1] for i in net.getUnconnectedOutLayers()]
 
 
 # Draw the predicted bounding box
@@ -75,26 +75,43 @@ def drawPred(classId, conf, left, top, right, bottom):
 
     # print(classes[classId])
 
+
     # adding detected item into a set
     itemSet.add(classes[classId])
 
     out_list = list(itemSet)
-    MyFile = open('output.txt', 'a')
+
     if (len(compList) != len(out_list)):
         for item in itemSet:
             count = count + 1
-            if item not in compList:
-                compList.append(item)
+
+            # if reduce_weight < weight:
+            #     for x in range(0, len(compList)):
+            #         if compList[x] == item:
+            #             # print(x)
+            #             del compList[x]
+            #
+            #             print(compList)
+
+            if new_weight > weight:
+
+                if item not in compList:
+
+                    compList.append(item)
                 #  print(compList)
-                MyFile.write(str(item) + '\n')
+
+                with open('datafile.txt', 'wb') as fh:
+                    pickle.dump(compList, fh)
+
+
                 if (count >= 1):
-                    MyFile.close()
+                    print(compList)
                     sys.exit()
 
     # print(classId)
     #  print(label)
 
-
+#bla
 # Remove the bounding boxes with low confidence using non-maxima suppression
 def postprocess(frame, outp):
     frameHeight = frame.shape[0]
@@ -125,7 +142,7 @@ def postprocess(frame, outp):
     # lower confidences.
     indices = cv2.dnn.NMSBoxes(boxes, confidences, confThreshold, nmsThreshold)
     for i in indices:
-        # i = i[0]
+        i = i[0]
         box = boxes[i]
         left = box[0]
         top = box[1]
