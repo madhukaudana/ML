@@ -85,21 +85,16 @@ def drawPred(classId, conf, left, top, right, bottom):
         for item in itemSet:
             count = count + 1
 
-            # if reduce_weight < weight:
-            #     for x in range(0, len(compList)):
-            #         if compList[x] == item:
-            #             # print(x)
-            #             del compList[x]
-            #
-            #             print(compList)
-
-            if new_weight > weight:
-
-                if item not in compList:
-
-                    compList.append(item)
-                #  print(compList)
-
+            if new_weight < weight:
+                for x in range(0, len(compList)):
+                    if compList[x] == item:
+                        #calculating deducted price
+                        reducedPrice=((weight-new_weight)*pricePer100g)/100
+                        totalPrice-=reducedPrice
+                        # print(x)
+                        del compList[x]
+                        print(compList)
+            
                 with open('datafile.txt', 'wb') as fh:
                     pickle.dump(compList, fh)
 
