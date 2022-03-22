@@ -110,7 +110,7 @@ def drawPred(classId, conf, left, top, right, bottom):
 
     # print(classId)
     #  print(label)
-
+#abc
 #bla
 # Remove the bounding boxes with low confidence using non-maxima suppression
 def postprocess(frame, outp):
