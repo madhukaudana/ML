@@ -17,6 +17,7 @@ cursor.execute(sql_Query)
 # getting all records from database prod_details table
 records = cursor.fetchall()
 
+
 product = "Watermelon"
 prodChecker= False
 
@@ -28,7 +29,7 @@ img_Path=None
 for row in records:               
     if(product==row[1]):
         prodChecker=True
-        product_details={"name":row[1], "productPrice":row[2], 'productQuantity':row[4], "imgPath":row[5]}
+        product_details={"name":row[1], "productPrice":row[2], 'productQuantity':row[4], "imgPath":row[5], "totalPrice":350.00}
         img_Path=row[5]
         
 

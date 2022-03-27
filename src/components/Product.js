@@ -10,11 +10,16 @@ function Product(props) {
     ).then(
       data => {
         setData(data)
-        console.log(data)
+        // console.log(data)
       }
     )
   }, [])
   
+  function addToLocalStorage(){
+    localStorage.setItem("boughtProducts",JSON.stringify(data));
+  }
+  addToLocalStorage();
+
   
   return (
     <div className='mainProductContainer'>
@@ -27,10 +32,14 @@ function Product(props) {
       )}
        */}
        <img className="mainProductImage" src={data.imgPath} />
-       <div>
+       <div className='mainProductDetails'>
+
         <p className='mainProductName'>Product Name : {data.name}</p>
         <p className='mainProductQty'>Product Quantity : {data.productQuantity}</p>
         <p className='mainProductPrice'>Product Price : Rs {data.productPrice}</p>
+       </div>
+       <div className='totalPriceContainer'>
+        <p className='totalPrice'>Total Price : Rs {data.totalPrice}</p>
        </div>
        
     </div>
