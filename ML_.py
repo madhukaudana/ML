@@ -5,7 +5,8 @@
 # yolo
 #test
 import pickle
-
+import pymongo
+import pandas as pd
 import numpy as np
 import cv2
 import argparse
@@ -73,7 +74,11 @@ def drawPred(classId, conf, left, top, right, bottom):
                   (255, 255, 255), cv2.FILLED)
     cv2.putText(frame, label, (left, top), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 0, 0), 1)
 
-    # print(classes[classId])
+   # connecting mongodb database
+    client = pymongo.MongoClient("mongodb://localhost:27017")
+    database = client["ProductDetails"]
+    mycollection = database["SDGP"]
+
 
 
     # adding detected item into a set
