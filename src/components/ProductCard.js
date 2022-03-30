@@ -21,11 +21,10 @@ function ProductCard(props) {
     if (boughtProducts) {
     setBoughtProducts(boughtProducts);
     }
-  }, []);
-
+  });
   return (
     <div className='productCardContainer'>
-        <img className="ProductCardImage" src={boughtProducts.imgPath} />
+        <img className="ProductCardImage" src={boughtProducts.imgPath} alt={boughtProducts.name}/>
        <div className='productCardDetails'>
                 
         <p className='ProductCardName'>Product Name : {boughtProducts.name}</p>
