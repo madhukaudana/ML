@@ -89,9 +89,6 @@ def drawPred(classId, conf, left, top, right, bottom):
     itemSet.add(classes[classId])
 
     out_list = list(itemSet)
-    for mrd in mycollection.find({}, { "productName": "banana"}):
-        print(mrd)
-
 
 
 
@@ -115,6 +112,10 @@ def drawPred(classId, conf, left, top, right, bottom):
                # totalPrice += finalPrice
                 if item not in compList:
                     compList.append(item)
+                    for mrd in mycollection.find({}, {"productName":item}):
+                        print(mrd)
+
+
 
                 #  print(compList)
 
