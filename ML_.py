@@ -20,13 +20,21 @@ import time
 weight = 100
 reduce_weight = 80
 new_weight = 120
+price=1
+weight=1
+#totalPrice=1
 
 itemSet = set()
 compList = []
+details =[]
 pickle_off = open ("datafile.txt", "rb")
 compList= pickle.load(pickle_off)
 print(compList)
 
+# connecting mongodb database
+client = pymongo.MongoClient("localhost:27017")
+database = client["ProductDetails"]
+mycollection = database["SDGP"]
 
 # Initialize the parameters
 confThreshold = 0.5  # Confidence threshold
@@ -51,7 +59,7 @@ def getOutputsNames(net):
     # Get the names of all the layers in the network
     layersNames = net.getLayerNames()
     # Get the names of the output layers, i.e. the layers with unconnected outputs
-    return [layersNames[i[0] - 1] for i in net.getUnconnectedOutLayers()]
+    return [layersNames[i - 1] for i in net.getUnconnectedOutLayers()]
 
 
 # Draw the predicted bounding box
@@ -74,10 +82,6 @@ def drawPred(classId, conf, left, top, right, bottom):
                   (255, 255, 255), cv2.FILLED)
     cv2.putText(frame, label, (left, top), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 0, 0), 1)
 
-   # connecting mongodb database
-    client = pymongo.MongoClient("mongodb://localhost:27017")
-    database = client["ProductDetails"]
-    mycollection = database["SDGP"]
 
 
 
@@ -85,26 +89,42 @@ def drawPred(classId, conf, left, top, right, bottom):
     itemSet.add(classes[classId])
 
     out_list = list(itemSet)
+    for mrd in mycollection.find({}, { "productName": "banana"}):
+        print(mrd)
+
+
+
 
     if (len(compList) != len(out_list)):
         for item in itemSet:
             count = count + 1
+            with open('datafile.txt', 'wb') as fh:
+                pickle.dump(compList, fh)
 
             if new_weight < weight:
                 for x in range(0, len(compList)):
                     if compList[x] == item:
                         #calculating deducted price
-                        reducedPrice=((weight-new_weight)*pricePer100g)/100
+                        reducedPrice=((weight-new_weight)*(price/weight))/100
                         totalPrice-=reducedPrice
                         # print(x)
                         del compList[x]
                         print(compList)
-            
+            elif new_weight > weight:
+                finalPrice = ((new_weight - weight) * (price/weight)) / 100
+               # totalPrice += finalPrice
+                if item not in compList:
+                    compList.append(item)
+
+                #  print(compList)
+
                 with open('datafile.txt', 'wb') as fh:
                     pickle.dump(compList, fh)
+            
 
 
-                if (count >= 1):
+
+                if (count >= 10):
                     print(compList)
                     sys.exit()
 
@@ -142,7 +162,7 @@ def postprocess(frame, outp):
     # lower confidences.
     indices = cv2.dnn.NMSBoxes(boxes, confidences, confThreshold, nmsThreshold)
     for i in indices:
-        i = i[0]
+        i = i
         box = boxes[i]
         left = box[0]
         top = box[1]
