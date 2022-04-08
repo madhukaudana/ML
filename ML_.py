@@ -17,11 +17,10 @@ import time
 
 # create set
 
-weight = 100
+oldWeight=100
 reduce_weight = 80
 new_weight = 120
-price=1
-weight=1
+
 #totalPrice=1
 
 itemSet = set()
@@ -34,12 +33,15 @@ print(compList)
 # connecting mongodb database
 client = pymongo.MongoClient("localhost:27017")
 database = client["ProductDetails"]
-mycollection = database["SDGP"]
+mycol = database["SDGP"]
+
+records=mycol.find()
+dbList = list(records)
+
 
 # Initialize the parameters
 confThreshold = 0.5  # Confidence threshold
 nmsThreshold = 0.4  # Non-maximum suppression threshold
-
 parser = argparse.ArgumentParser(description='Object Detection using YOLO in OPENCV')
 parser.add_argument('--image', help='Path to image file.')
 parser.add_argument('--video', help='Path to video file.')
@@ -88,44 +90,44 @@ def drawPred(classId, conf, left, top, right, bottom):
     # adding detected item into a set
     itemSet.add(classes[classId])
 
-    out_list = list(itemSet)
-
-
-
-    if (len(compList) != len(out_list)):
-        for item in itemSet:
-            count = count + 1
-            with open('datafile.txt', 'wb') as fh:
-                pickle.dump(compList, fh)
-
-            if new_weight < weight:
+    for item in itemSet:
+            if new_weight < oldWeight:
                 for x in range(0, len(compList)):
                     if compList[x] == item:
                         #calculating deducted price
-                        reducedPrice=((weight-new_weight)*(price/weight))/100
-                        totalPrice-=reducedPrice
+                        #reducedPrice=((weight-new_weight)*(price/weight))/100
+                        #totalPrice-=reducedPrice
                         # print(x)
                         del compList[x]
                         print(compList)
-            elif new_weight > weight:
-                finalPrice = ((new_weight - weight) * (price/weight)) / 100
+            elif new_weight > oldWeight:
+
                # totalPrice += finalPrice
                 if item not in compList:
                     compList.append(item)
-                    for mrd in mycollection.find({}, {"productName":item}):
-                        print(mrd)
+                    count = count + 1
+                    with open('datafile.txt', 'wb') as fh:
+                        pickle.dump(compList, fh)
+                    for element in dbList:
+                        if element['productName'] == item:
+                            name=element['productName']
+                            price = element['productPrice']
+                            weight = element['productWeight(g)']
+                            finalPrice = ((new_weight - oldWeight) * (price / weight)) / 100
+                            print("Price: ",round(finalPrice, 2))
+
+
 
 
 
                 #  print(compList)
 
-                with open('datafile.txt', 'wb') as fh:
-                    pickle.dump(compList, fh)
+
             
 
 
 
-                if (count >= 10):
+                if count >= 1:
                     print(compList)
                     sys.exit()
 
