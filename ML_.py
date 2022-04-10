@@ -1,12 +1,10 @@
 # Usage:
 # python yolo.py --video=<path to video file>
 # python yolo.py --image=<path to image file>
-# objectdetection
-# yolo
-#test
+
 import pickle
 import pymongo
-import pandas as pd
+import pandas as pdq
 import numpy as np
 import cv2
 import argparse
@@ -14,7 +12,9 @@ import sys
 import numpy as np
 import os.path
 import time
+from flask import Flask
 
+product_details = {}
 # create set
 
 oldWeight=100
@@ -26,11 +26,11 @@ new_weight = 120
 itemSet = set()
 compList = []
 details =[]
-pickle_off = open ("datafile.txt", "rb")
-compList= pickle.load(pickle_off)
-print(compList)
+# pickle_off = open ("datafile.txt", "rb")
+# compList= pickle.load(pickle_off)
+# print(compList)
 
-# connecting mongodb database
+# connecting mongodb database,
 client = pymongo.MongoClient("localhost:27017")
 database = client["ProductDetails"]
 mycol = database["SDGP"]
@@ -85,24 +85,42 @@ def drawPred(classId, conf, left, top, right, bottom):
     cv2.putText(frame, label, (left, top), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 0, 0), 1)
 
 
-
-
     # adding detected item into a set
     itemSet.add(classes[classId])
+    return itemSet
 
+
+def calculation(itemSet):
+    count = 0
     for item in itemSet:
-            if new_weight < oldWeight:
-                for x in range(0, len(compList)):
-                    if compList[x] == item:
-                        #calculating deducted price
-                        #reducedPrice=((weight-new_weight)*(price/weight))/100
-                        #totalPrice-=reducedPrice
-                        # print(x)
-                        del compList[x]
-                        print(compList)
-            elif new_weight > oldWeight:
+            # if new_weight < oldWeight:
+            #     for x in range(0, len(compList)):
+                    # if compList[x] == item:
+                    #     #calculating deducted price
+                    #     for element in dbList:
+                    #         if element['productName'] == item:
+                    #             name = element['productName']
+                    #             price = element['productPrice']
+                    #             weight = element['productWeight(g)']
+                    #             reducedPrice=((weight-new_weight)*(price/weight))/100
+                    #             #totalPrice-=reducedPrice
+                    #
+                    #             product_details = {"name": name, "productPrice": price, "productQuantity": 1,
+                    #                                "imgPath": "images/watermelon.jpg", "totalPrice": 350.00}
+                    #             app = Flask(__name__)
+                    #
+                    #             @app.route("/productDetails")
+                    #             def members():
+                    #                 return product_details
+                    #
+                    #             if __name__ == "__main__":
+                    #                 app.run(debug=True)
+                    #
+                    #     # print(x)
+                    #     del compList[x]
+                    #     print(compList)
 
-               # totalPrice += finalPrice
+            if new_weight > oldWeight:
                 if item not in compList:
                     compList.append(item)
                     count = count + 1
@@ -114,22 +132,36 @@ def drawPred(classId, conf, left, top, right, bottom):
                             price = element['productPrice']
                             weight = element['productWeight(g)']
                             finalPrice = ((new_weight - oldWeight) * (price / weight)) / 100
+                            #totalPrice += finalPrice
                             print("Price: ",round(finalPrice, 2))
 
+                            product_details = {"name": name, "productPrice": price, "productQuantity": weight,
+                                               "imgPath": "images/watermelon.jpg", "totalPrice": round(finalPrice, 2)}
+                            app = Flask(__name__)
 
+                            @app.route("/productDetails")
+                            def members():
+                                return product_details
 
-
-
-                #  print(compList)
-
-
-            
-
-
+                            if __name__ == "__main__":
+                                app.run()
 
                 if count >= 1:
+                    # sys.exit()
                     print(compList)
-                    sys.exit()
+
+
+# product_details = {"name": "watermelon", "productPrice": 350, "productQuantity": 1,
+#                        "imgPath": "images/watermelon.jpg", "totalPrice": 350.00}
+# product_details={"a","b"}
+# app = Flask(__name__)
+#
+# @app.route("/productDetails")
+# def members():
+#     return product_details
+#
+# if __name__ == "__main__":
+#     app.run(debug=True)
 
     # print(classId)
     #  print(label)
@@ -174,22 +206,33 @@ def postprocess(frame, outp):
         drawPred(classIds[i], confidences[i], left, top, left + width, top + height)
 
 
-outputFile = "YOLOv3_output.avi"
+        calculation(itemSet)
+        # app = Flask(__name__)
+        #
+        # @app.route("/productDetails")
+        # def members():
+        #     return product_details
+        #
+        # if __name__ == "__main__":
+        #     app.run(debug=True)
+
+
+# outputFile = "YOLOv3_output.avi"
 if (args.image):
     # Open the image file
     if not os.path.isfile(args.image):
         print("Input image file ", args.image, " doesn't exist")
         sys.exit(1)
-    cap = cv2.VideoCapture(args.image)
-    outputFile = args.image[:-4] + '_YOLOv3_output.jpg'
+    # cap = cv2.VideoCapture(args.image)
+    # outputFile = args.image[:-4] + '_YOLOv3_output.jpg'
 else:
     # Open the video file
     cap = cv2.VideoCapture(0)
 
 # Get the video writer initialized to save the output video
-if (not args.image):
-    vid_writer = cv2.VideoWriter(outputFile, cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'), 30,
-                                 (round(cap.get(cv2.CAP_PROP_FRAME_WIDTH)), round(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))))
+# if (not args.image):
+#     vid_writer = cv2.VideoWriter(outputFile, cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'), 30,
+#                                  (round(cap.get(cv2.CAP_PROP_FRAME_WIDTH)), round(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))))
 
 while cv2.waitKey(1) < 0:
 
@@ -197,7 +240,7 @@ while cv2.waitKey(1) < 0:
 
     # Stop if end of video
     if not hasFrame:
-        print("File with YOLOv3 output is here :  ", outputFile)
+        # print("File with YOLOv3 output is here :  ", outputFile)
         cv2.waitKey(5000)
         cap.release()
         break
@@ -215,9 +258,9 @@ while cv2.waitKey(1) < 0:
     postprocess(frame, outp)
 
     # Write the frame with the detection boxes
-    if (args.image):
-        cv2.imwrite(outputFile, frame.astype(np.uint8))
-    else:
-        vid_writer.write(frame.astype(np.uint8))
+    # if (args.image):
+    #     cv2.imwrite(outputFile, frame.astype(np.uint8))
+    # else:
+    #     vid_writer.write(frame.astype(np.uint8))
 
     cv2.imshow('Image', frame)
