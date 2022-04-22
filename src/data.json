@@ -1,0 +1,19 @@
+[
+    {
+        "id":1,
+        "name":"watermelon",
+        "price":350.00,
+        "image":"images/watermelon.jpg",
+        "quantity":1,
+        "totalPrice":350.00
+        
+    },
+    {
+        "id":2,
+        "name":"banana",
+        "price":350.00,
+        "image":"images/banana.jpg",
+        "quantity":1,
+        "totalPrice":700.00
+    }
+]
