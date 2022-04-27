@@ -1,7 +1,7 @@
 [
     {
         "id":1,
-        "name":"watermelon",
+        "name":"Watermelon",
         "price":350.00,
         "image":"images/watermelon.jpg",
         "quantity":1,
@@ -10,7 +10,7 @@
     },
     {
         "id":2,
-        "name":"banana",
+        "name":"Banana",
         "price":350.00,
         "image":"images/banana.jpg",
         "quantity":1,
