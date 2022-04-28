@@ -1,9 +1,10 @@
 import React from "react"
 import "../App.css"
 import data from "../data.json"
+import { useNavigate} from "react-router-dom"
 
 function Product() {
-  
+  let navigate =useNavigate();
   var lastIndex= data.length - 1
   return (
     <div className='mainProductContainer'>
@@ -19,7 +20,9 @@ function Product() {
           <div className='totalPriceContainer'>
           <p className='totalPrice'>Total Price : Rs {data[lastIndex].totalPrice}</p> 
           </div>
-          <div className="checkoutButton">
+          <div className="checkoutButton" onClick={() => {
+                    navigate("/checkout")
+                }}>
             <span></span>
             <span></span>
             <span></span>

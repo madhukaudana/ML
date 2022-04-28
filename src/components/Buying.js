@@ -5,9 +5,10 @@ import Data from "../data.json"
 import "../index.css"
 import Timer from "./Timer"
 
-
 function Buying(){
+  
   return (
+    
     <div className="mainContainer">
       <div className="one">
          <Timer />

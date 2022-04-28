@@ -14,7 +14,7 @@ function Home(){
                     <span></span>
                     <span></span>
                     <span></span>
-                    Start
+                    START
                 </div>
             </div>
         </div>
