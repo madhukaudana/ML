@@ -135,16 +135,43 @@ def calculation(itemSet):
                             #totalPrice += finalPrice
                             print("Price: ",round(finalPrice, 2))
 
-                            product_details = {"name": name, "productPrice": price, "productQuantity": weight,
-                                               "imgPath": "images/watermelon.jpg", "totalPrice": round(finalPrice, 2)}
-                            app = Flask(__name__)
+                            for i in range(len(compList)):
+                                file_details = [
+                                    {
+                                        "name": "banana",
+                                        "price": round(finalPrice, 2),
+                                        "image": "images/banana.jpg",
+                                        "quantity": 1,
+                                        "totalPrice": totalPrice
+                                    }
+                                ]
+                                # # serializing  json
+                                # json_object = json.dumps(file_details, indent=4)
+                                #
+                                # # writing to details.json
+                                # with open("details.json", "w") as json_file:
+                                #     json_file.write(json_object)
+                                # # loading json file
+                            with open("details.json", 'r+') as file:
+                        # First we load existing data into a dict.
 
-                            @app.route("/productDetails")
-                            def members():
-                                return product_details
+                        file_data = json.load(file)
+                        # Join new_data with file_data inside emp_details
+                        for i in range(len(compList)):
+                            new_data = {
 
-                            if __name__ == "__main__":
-                                app.run()
+                                "name": compList[i],
+                                "price": round(finalPrice, 2),
+                                "image": "images/hiruni.jpg",
+                                "quantity": 1,
+                                "totalPrice": totalPrice
+
+                            }
+                        file_data.append(new_data)
+                        # Sets file's current position at offset.
+                        file.seek(0)
+                        # convert back to json.
+                        json.dump(file_data, file, indent=4)
 
                 if count >= 1:
                     # sys.exit()
